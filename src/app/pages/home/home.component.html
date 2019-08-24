@@ -1,0 +1,26 @@
+<div class="vh-100 overflow-hidden position-relative">
+    <p class="slogan">舒適體驗的首選</p>
+    <img width="100%" src='assets/icons/未命名-1@2x.png'>
+    <button class="discover p-3" (click)="down('content')">
+        開始探索
+    </button>
+</div>
+<div class="container" id="content">
+    <section class="section">
+        <app-separate [separate]="'客房介紹'"></app-separate>
+        <div class="rooms">
+            <div class="info" *ngFor="let room of rooms">
+                <div class="info__image" [ngStyle]="{'background-image': 'url(' + room.imageUrl + ')'}" routerLink='/room/{{room.id}}'></div>
+                <ul class="m-0">
+                    <li>{{ room.name }}</li>
+                    <li>平日 ${{ room.normalDayPrice }}</li>
+                    <li>假日 ${{ room.holidayPrice }} </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <app-separate [separate]="'交通方式'"></app-separate>
+        <div class="traffic"></div>
+    </section>
+</div>
