@@ -135,8 +135,15 @@
 <div class="mask" *ngIf="showOrder">
 </div>
 <div class="showOrder p-4" *ngIf="showOrder">
+    <div class="alert alert-danger" role="alert">
+        {{ errorMsg }}
+    </div>
     <h2>預約資料</h2>
-    <div class="bg-light p-3">
+    <div class="bg-light p-3 position-relative">
+        <div class="success" *ngIf="success">
+            <img width="30%" src='/assets/icons/successs.svg'>
+            預約成功
+        </div>
         <div class="mb-3">
             <label>日期</label>
             <div class="h3">{{ date[0] }} → {{ date[1] }}</div>
@@ -167,5 +174,18 @@
             </div>
         </div>
     </div>
-
+    <form>
+        <mat-form-field class="w-100">
+            <label>姓名</label>
+            <input matInput [(ngModel)]="custom.name" name="name">
+        </mat-form-field>
+        <mat-form-field class="w-100">
+            <label>電話</label>
+            <input matInput [(ngModel)]="custom.tel" name="tel">
+        </mat-form-field>
+    </form>
+    <div class="d-flex justify-content-between">
+        <button class="btn btn-danger" (click)="cancel()">取消</button>
+        <button class="btn btn-warning" (click)="booked()">送出</button>
+    </div>
 </div>

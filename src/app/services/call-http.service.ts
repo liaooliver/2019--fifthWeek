@@ -7,7 +7,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class CallHTTPService {
 
   private url = 'https://challenge.thef2e.com/api/thef2e2019/stage6/';
-  private _headers = { headers: new HttpHeaders().set('Authorization', 'Bearer Jnuz37HrHeF9rdTGjf1vNzbsOCfZgWNWy8ZGQAQQjBZ8mJ28OObfMeymoX5').set('accept', 'application/json') };
+  private _headers = { 
+    headers: new HttpHeaders()
+    .set('Authorization', 'Bearer Jnuz37HrHeF9rdTGjf1vNzbsOCfZgWNWy8ZGQAQQjBZ8mJ28OObfMeymoX5')
+    .set('accept', 'application/json')
+    .set('Content-Type','application/json')
+  };
 
   constructor(
     public _http:HttpClient
@@ -19,5 +24,9 @@ export class CallHTTPService {
 
   getSingle(id){
     return this._http.get(this.url + `room/${id}`, this._headers)
+  }
+
+  postBooking(book, id){
+    return this._http.post(this.url + `room/${id}`, book, this._headers)
   }
 }

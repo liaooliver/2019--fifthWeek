@@ -21,17 +21,18 @@ export class RoomComponent implements OnInit {
     });
   }
   
+  public id:string = ""
   public min = this.minDate();
   public max = this.maxDate();
-  public form: FormGroup
-  public imageUrl: string[] = []
+  public form: FormGroup;
+  public imageUrl: string[] = [];
   public checkInAndOut:any = {};
   public amenities:any = {};
   public descriptionShort:any = {};
   public description:string;
   public name:string; 
-  public date:string[] = []
-  public price: number[] = []
+  public date:string[] = [];
+  public price: number[] = [];
   public duration:number;
   public totalPrice:number = 0;
   public visitor:number;
@@ -40,11 +41,17 @@ export class RoomComponent implements OnInit {
   public normalDay:number = 0;
   public holiday:number = 0;
   public showOrder:boolean = false;
+  public success:boolean = false;
+  public errorMsg:string;
+  public custom:any = {
+    name:"",
+    tel:""
+  };
 
   ngOnInit() {
     this._router.params.subscribe(res => {
-      let id = res.id
-      this._call.getSingle(id).subscribe(res => {
+      this.id = res.id
+      this._call.getSingle(this.id).subscribe(res => {
         console.log(res)
         this.description = res['room'][0]['description']
         this.checkInAndOut = res['room'][0]['checkInAndOut']
@@ -119,14 +126,26 @@ export class RoomComponent implements OnInit {
   }
 
   onSubmit(form){
-
     this.showOrder = true;
     this.visitor = form['value']['number']
-    let response = {
-      name: "",
-      tel: "000000000",
-      date: this.date
+  }
+
+  booked(){
+    let book = {
+      name: this.custom.name,
+      tel: this.custom.tel,
+      date:this.date
     }
+    this._call.postBooking(book,this.id).subscribe(res => {
+      this.success = true;
+      console.log(res)
+    }, error => { this.errorMsg = error.error.message  })
+  }
+
+  cancel(){
+    this.showOrder = false;
+    this.custom = { name: "", tel: ""};
+    this.date = [];
   }
 
   convertFormat(value){
@@ -134,7 +153,7 @@ export class RoomComponent implements OnInit {
     let yy = date.getFullYear()
     let mm = date.getMonth() + 1;
     let dd = date.getDate();
-    return `${yy}-${mm}-${dd}`;
+    return `${this.addZero(yy)}-${this.addZero(mm)}-${this.addZero(dd)}`;
   }
 
   addZero(value){
